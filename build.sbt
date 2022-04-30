@@ -1,18 +1,18 @@
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
-name := "scala-template"
-version := "0.0.1-SNAPSHOT"
+ThisBuild / version := "1.0.0-SNAPSHOT"
 
-scalaVersion := "2.13.8"
+ThisBuild / scalaVersion := "2.13.8"
 
-javacOptions := Seq(
+ThisBuild / javacOptions := Seq(
   "-source",
   "11",
   "-target",
-  "11",
+  "11"
 )
 
-scalacOptions ++= Seq(
+// https://sanj.ink/posts/2019-06-14-scalac-2.13-options-and-flags.html
+ThisBuild / scalacOptions ++= Seq(
   "-encoding",
   "UTF-8",
   "-feature",
@@ -22,20 +22,18 @@ scalacOptions ++= Seq(
   "-language:higherKinds",
   "-language:existentials",
   "-Wconf:cat=other-match-analysis:error",
-  "-Wunused",
   "-Xfatal-warnings",
   "-Ymacro-annotations",
   "-Ywarn-numeric-widen",
   "-Ywarn-value-discard",
   "-Ywarn-dead-code",
-//  "-Ywarn-unused",
-  "-Yrepl-class-based",
+  "-Yrepl-class-based"
 )
 
 def http4s(artifact: String): ModuleID = "org.http4s" %% artifact % "1.0.0-M32"
 def circe(artifact: String): ModuleID = "io.circe"    %% artifact % "0.14.1"
 
-libraryDependencies ++= Seq(
+lazy val dependencies = Seq(
   compilerPlugin("org.typelevel"  %% "kind-projector"     % "0.13.2" cross CrossVersion.full),
   compilerPlugin("com.olegpy"     %% "better-monadic-for" % "0.3.1"),
   compilerPlugin("org.augustjune" %% "context-applied"    % "0.1.4"),
@@ -52,5 +50,22 @@ libraryDependencies ++= Seq(
   "org.scalatest"     %% "scalatest-shouldmatchers" % "3.2.11",
   "org.scalatest"     %% "scalatest-funspec"        % "3.2.11",
   "org.scalacheck"    %% "scalacheck"               % "1.15.4",
-  "org.scalatestplus" %% "scalacheck-1-15"          % "3.2.11.0",
+  "org.scalatestplus" %% "scalacheck-1-15"          % "3.2.11.0"
 )
+
+lazy val common = (project in file("common"))
+  .settings(
+    libraryDependencies ++= dependencies
+  )
+
+lazy val server = (project in file("server"))
+  .dependsOn(common)
+  .settings(
+    name := "server"
+  )
+
+lazy val pipeline = (project in file("pipeline"))
+  .dependsOn(common)
+  .settings(
+    name := "pipeline"
+  )
