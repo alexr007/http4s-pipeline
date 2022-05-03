@@ -1,0 +1,9 @@
+####
+GET http://localhost:8080/pipeline/600
+
+####
+GET http://localhost:8080/pipeline/700
+
+####
+GET http://localhost:8080/pipeline/800
+

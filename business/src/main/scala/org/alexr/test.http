@@ -1,0 +1,20 @@
+####
+GET http://localhost:8081/
+
+####
+GET http://localhost:8081/3s
+
+####
+POST http://localhost:8081/do_fast
+
+{
+  "value" : 10
+}
+
+####
+POST http://localhost:8081/do_slow
+
+{
+  "value" : 10
+}
+

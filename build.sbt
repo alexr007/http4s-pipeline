@@ -69,3 +69,9 @@ lazy val pipeline = (project in file("pipeline"))
   .settings(
     name := "pipeline"
   )
+
+lazy val business = (project in file("business"))
+  .dependsOn(common)
+  .settings(
+    name := "business"
+  )
